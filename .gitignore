@@ -1,3 +1,6 @@
 __pycache__
 *.pyc
 logs
+logs.txt
+tournament*
+start_game_custom.py

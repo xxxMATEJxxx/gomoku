@@ -14,7 +14,7 @@ def whoWonRow(row):
         elif streak <= 0 and value == -1:
             streak -= 1
         else:
-            streak = 0
+            streak = value
 
         if streak >= WINNING_LENGTH:
             return 1
@@ -56,9 +56,9 @@ class GomokuTournament:
 
     def save_logs(self):
       with open('logs.txt', 'w+') as output_file:
-        output_file.write(f'X: {self.playerX.name} vs. O:{self.playerO.name}')
+        output_file.write(f'X: {self.playerX.name} vs. O:{self.playerO.name}\n')
         for line in self.history:
-          output_file.write(f'{"X" if line[0] == 1 else "O"}\t{line[1]}\t{line[2]}')
+          output_file.write(f'{"X" if line[0] == 1 else "O"}\t{line[1]}\t{line[2]}\n')
 
     def placeSymbol(self, player, coords):
         try:
