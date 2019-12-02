@@ -10,7 +10,7 @@ class Player(threading.Thread):
         threading.Thread.__init__(self)
         self.start()
         self.sign = player_sign
-        self.name = 'window'
+        self.name = 'window' + str(player_sign)
     def run(self):
         self.window = tkinter.Tk()
         self.canvas = tkinter.Canvas(self.window, bg='black', height=FIELD_SIZE * 15, width=FIELD_SIZE * 15)
@@ -39,8 +39,9 @@ class Player(threading.Thread):
             self.opponent_image = image_o
             self.player_image = image_x
         else:
-            self.opponent_image = image_o
-            self.player_image = image_y
+            self.opponent_image = image_x
+            self.player_image = image_o
+        print(self.opponent_image)
         self.window.mainloop()
 
     def handle_mouse_click(self, event):
