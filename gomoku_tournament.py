@@ -1,5 +1,5 @@
 import numpy as np
-
+import traceback
 GRID_SIZE = 15
 WINNING_LENGTH = 5
 
@@ -30,14 +30,25 @@ class GomokuTournament:
         self.grid = np.zeros((GRID_SIZE, GRID_SIZE), int)
         self.history = []
     def game(self):
+        print(f'started game X:{self.playerX.name} vs. O:{self.playerO.name}')
         coordsO = None
         coordsX = None
         while True:
-            coordsX = self.playerX.play(coordsO)
+            try:
+                coordsX = self.playerX.play(coordsO)
+            except Exception as e:
+                print('player X crashed')
+                print(e)
+                traceback.print_exc()
             self.placeSymbol(X, coordsX)
             if (self.whoWon() != 0):
                 break
-            coordsO = self.playerO.play(coordsX)
+            try:
+                coordsO = self.playerO.play(coordsX)
+            except Exception as e:
+                print('player O crashed')
+                print(e)
+                traceback.print_exc()
             self.placeSymbol(O, coordsO)
             if (self.whoWon() != 0):
                 break
@@ -55,7 +66,7 @@ class GomokuTournament:
         return score
 
     def save_logs(self):
-      with open('logs.txt', 'w+') as output_file:
+      with open('logs.txt', 'a') as output_file:
         output_file.write(f'X: {self.playerX.name} vs. O:{self.playerO.name}\n')
         for line in self.history:
           output_file.write(f'{"X" if line[0] == 1 else "O"}\t{line[1]}\t{line[2]}\n')
@@ -69,6 +80,7 @@ class GomokuTournament:
             if self.grid[row, col] != 0:
                 print(f'invalid move. {coords} is already taken')
                 return
+            print(f'player {player} played {coords}')
             self.grid[row, col] = player
             self.history.append((player, row, col))
         except Exception as err:
