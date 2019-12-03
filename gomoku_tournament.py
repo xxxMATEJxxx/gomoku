@@ -1,5 +1,8 @@
 import numpy as np
 import traceback
+import time
+import pdb
+
 GRID_SIZE = 15
 WINNING_LENGTH = 5
 
@@ -24,37 +27,55 @@ def whoWonRow(row):
   
 
 class GomokuTournament:
-    def __init__(self, playerX, playerO):
+    def __init__(self, playerX, playerO, time_limit):
         self.playerX = playerX
         self.playerO = playerO
+        self.timer = {}
+        self.timer[playerX] = time_limit
+        self.timer[playerO] = time_limit
         self.grid = np.zeros((GRID_SIZE, GRID_SIZE), int)
         self.history = []
+
     def game(self):
         print(f'started game X:{self.playerX.name} vs. O:{self.playerO.name}')
         coordsO = None
         coordsX = None
         while True:
-            try:
-                coordsX = self.playerX.play(coordsO)
-            except Exception as e:
-                print('player X crashed')
-                print(e)
-                traceback.print_exc()
+            coordsX = self.player_move(self.playerX, coordsO)
             self.placeSymbol(X, coordsX)
             if (self.whoWon() != 0):
                 break
-            try:
-                coordsO = self.playerO.play(coordsX)
-            except Exception as e:
-                print('player O crashed')
-                print(e)
-                traceback.print_exc()
+            coordsO = self.player_move(self.playerO, coordsX)
             self.placeSymbol(O, coordsO)
             if (self.whoWon() != 0):
                 break
-        return self.whoWon()
+        winner = self.whoWon()
+        return winner
+    
+    def player_move(self, player, opponent_move):
+        coords = None
+        start_time = time.time()
+        try:
+            coords = player.play(opponent_move)
+        except Exception as e:
+            print('player {player.name} crashed')
+            print(e)
+            traceback.print_exc()
+        duration = time.time() - start_time
+        self.timer[player] -= duration
+        print(f'{player.name} played {coords}')
+        print(f'{player.name} has {self.timer[player]:.2f} s left')
+        return coords
+
 
     def whoWon(self):
+        if self.timer[self.playerX] < 0:
+            print(f'{self.playerX.name} ran out of time')
+            return -1
+        if self.timer[self.playerO] < 0:
+            print(f'{self.playerO.name} ran out of time')
+            return 1
+
         score = 0
         for i in range(15):
             score += whoWonRow(self.grid[i,:]) # check i-th row
@@ -73,6 +94,8 @@ class GomokuTournament:
 
     def placeSymbol(self, player, coords):
         try:
+            if coords == None:
+                print(f'invalid coordinates {coords}')
             row, col = coords
             if row >= 15 or row < 0 or col >= 15 or col < 0:
                 print(f'invalid coordinates {coords}')
@@ -80,7 +103,6 @@ class GomokuTournament:
             if self.grid[row, col] != 0:
                 print(f'invalid move. {coords} is already taken')
                 return
-            print(f'player {player} played {coords}')
             self.grid[row, col] = player
             self.history.append((player, row, col))
         except Exception as err:
