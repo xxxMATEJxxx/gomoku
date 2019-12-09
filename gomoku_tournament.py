@@ -42,23 +42,27 @@ class GomokuTournament:
         coordsX = None
         while True:
             coordsX = self.player_move(self.playerX, coordsO)
-            self.placeSymbol(X, coordsX)
+            coordsX = self.placeSymbol(X, coordsX)
             if (self.whoWon() != 0):
                 break
             coordsO = self.player_move(self.playerO, coordsX)
-            self.placeSymbol(O, coordsO)
+            coordsO = self.placeSymbol(O, coordsO)
             if (self.whoWon() != 0):
                 break
+            if (coordsX == None and coordsO == None):
+                print('nobody played a valid move in this round. it is a split.')
+                return 0
         winner = self.whoWon()
         return winner
     
     def player_move(self, player, opponent_move):
         coords = None
         start_time = time.time()
+        print(f'{player.name} thinking...')
         try:
             coords = player.play(opponent_move)
         except Exception as e:
-            print('player {player.name} crashed')
+            print(f'player {player.name} crashed')
             print(e)
             traceback.print_exc()
         duration = time.time() - start_time
@@ -94,17 +98,17 @@ class GomokuTournament:
 
     def placeSymbol(self, player, coords):
         try:
-            if coords == None:
-                print(f'invalid coordinates {coords}')
             row, col = coords
             if row >= 15 or row < 0 or col >= 15 or col < 0:
                 print(f'invalid coordinates {coords}')
-                return
+                return None
             if self.grid[row, col] != 0:
                 print(f'invalid move. {coords} is already taken')
-                return
+                return None
             self.grid[row, col] = player
             self.history.append((player, row, col))
+            return (row, col)
         except Exception as err:
             print(err)
             print(f'cannot place on coordinates {coords}')
+            return None

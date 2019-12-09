@@ -1,22 +1,22 @@
 import window.player
 import example.player
 
-import tournament1.BuyingGF.player
-import tournament1.stepan.player
-import tournament1.timotej.player
-import tournament1.tomas.player
+import tournament2.BuyingGF.player
+import tournament2.stepan.player
+import tournament2.timotej.player
+import tournament2.tomas.player
 
 from gomoku_tournament import GomokuTournament
 
 TIME_LIMIT = 300
 
 players_and_names = [
-    (tournament1.BuyingGF.player, 'BuyingGF'),
+    (tournament2.BuyingGF.player, 'BuyingGF'),
 #    (window.player, 'Martin Španěl'),
 #    (example.player, 'example'),
-    (tournament1.stepan.player, 'Štěpán'),
-    (tournament1.timotej.player, 'Tim'),
-    (tournament1.tomas.player, 'Tomáš'),
+    (tournament2.stepan.player, 'Štěpán'),
+    (tournament2.timotej.player, 'Tim'),
+    (tournament2.tomas.player, 'Tomáš'),
 ]
 
 nplayers = len(players_and_names)
@@ -39,10 +39,12 @@ for i in range(nplayers):
         winner = tournament.game()
         tournament.save_logs()
         results[i][j] = winner
-        print(f'winner is {"X" if winner == 1 else "Y"}: {name_i if winner == 1 else name_j}')
+        if winner == 0:
+            print('nobody won.')
+        else:
+            print(f'winner is {"X" if winner == 1 else "O"}: {name_i if winner == 1 else name_j}')
+
 print('results:')
-
-
 for i in range(nplayers):
     for j in range(nplayers):
         if i == j: continue
