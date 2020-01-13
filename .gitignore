@@ -2,7 +2,12 @@ __pycache__
 *.pyc
 logs
 logs.txt
+output*.txt
 tournament*
 start_game_custom.py
+start_game_tournament_custom.py
 tomas/
 stepan/
+buyinggf/
+kuba/
+milan/
