@@ -58,7 +58,7 @@ class GomokuTournament:
     def player_move(self, player, opponent_move):
         coords = None
         start_time = time.time()
-        print(f'{player.name} thinking...')
+        print(f'{player.name} thinking...', flush=True)
         try:
             coords = player.play(opponent_move)
         except Exception as e:
