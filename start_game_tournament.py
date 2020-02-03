@@ -1,6 +1,7 @@
+import os
+
 #import window.player
 import example.player
-
 import buyinggf.player
 import stepan.player
 import timotej.player
@@ -23,6 +24,7 @@ players_and_names = [
     (milan.player, 'Milan'),
 ]
 
+os.remove('logs.txt')
 nplayers = len(players_and_names)
 results = [[0 for i in range(nplayers)] for j in range(nplayers)]
 for i in range(nplayers):
