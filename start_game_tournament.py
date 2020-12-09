@@ -2,26 +2,14 @@ import os
 
 #import window.player
 import example.player
-import buyinggf.player
-import stepan.player
-import timotej.player
-import tomas.player
-import kuba.player
-import milan.player
 
 from gomoku_tournament import GomokuTournament
 
 TIME_LIMIT = 300
 
 players_and_names = [
-    (buyinggf.player, 'BuyingGF'),
-#    (window.player, 'Martin Španěl'),
-#    (example.player, 'example'),
-    (stepan.player, 'Štěpán'),
-    (timotej.player, 'Tim'),
-    (tomas.player, 'Tomáš'),
-    (kuba.player, 'Kuba'),
-    (milan.player, 'Milan'),
+    (example.player, 'example 1'),
+    (example.player, 'example 2'),
 ]
 
 os.remove('logs.txt')
