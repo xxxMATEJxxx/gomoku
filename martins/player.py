@@ -1,3 +1,5 @@
+import random
+
 class Board:
     SIZE = 15
 
@@ -47,7 +49,10 @@ class Board:
             self.diagonals_descending[descending_diagonal_number][column] = player
         else:
             self.diagonals_descending[descending_diagonal_number][row] = player
-        self.print_all()
+        #self.print_all()
+
+    def get(self, row, col):
+        return self.rows[row][col]
 
     def print_all(self):
         print('rows')
@@ -69,12 +74,19 @@ class Player:
         self.opponent_sign = -player_sign
         self.name = 'Martin Spanel'
         self.board = Board()
+        random.seed(17)
+
+    def pick_random_valid_turn(self):
+        while True:
+            row = random.randint(0, 14)
+            col = random.randint(0, 14)
+            if (self.board.get(row, col) == 0): return (row, col)
 
     def play(self, opponent_move):
         if opponent_move == None:
-            return (8, 8)
+            return self.pick_random_valid_turn()
         row, col = opponent_move
         self.board.new_turn(row, col, self.opponent_sign)
-        my_turn_row, my_turn_col = (row+1, col+1)
+        my_turn_row, my_turn_col = self.pick_random_valid_turn()
         self.board.new_turn(my_turn_row, my_turn_col, self.sign)
         return my_turn_row, my_turn_col
