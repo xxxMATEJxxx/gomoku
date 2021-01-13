@@ -83,10 +83,9 @@ class Player:
             if (self.board.get(row, col) == 0): return (row, col)
 
     def play(self, opponent_move):
-        if opponent_move == None:
-            return self.pick_random_valid_turn()
-        row, col = opponent_move
-        self.board.new_turn(row, col, self.opponent_sign)
+        if opponent_move != None:
+            row, col = opponent_move
+            self.board.new_turn(row, col, self.opponent_sign)
         my_turn_row, my_turn_col = self.pick_random_valid_turn()
         self.board.new_turn(my_turn_row, my_turn_col, self.sign)
         return my_turn_row, my_turn_col
