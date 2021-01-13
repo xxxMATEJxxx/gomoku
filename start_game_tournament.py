@@ -2,17 +2,25 @@ import os
 
 #import window.player
 import example.player
+import majstr.player
+import martins.player
+import svecova.player
+import sebastian.player
 
 from gomoku_tournament import GomokuTournament
 
 TIME_LIMIT = 300
 
 players_and_names = [
-    (example.player, 'example 1'),
-    (example.player, 'example 2'),
+    (majstr.player, 'Majstr'),
+    (martins.player, 'Martin Spanel'),
+    (svecova.player, 'Hana Svecova'),
+    (sebastian.player, 'Sebastian'),
 ]
-
-os.remove('logs.txt')
+try:
+    os.remove('logs.txt')
+except Exception:
+    pass
 nplayers = len(players_and_names)
 results = [[0 for i in range(nplayers)] for j in range(nplayers)]
 for i in range(nplayers):
