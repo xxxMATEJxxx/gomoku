@@ -10,10 +10,18 @@ class Player:
     self.c = -1                            # mé souřadnice sloupce
     self.round = 0
   def play(self, opponent_move):
+    if opponent_move == None:
+        r = randint(0,14)
+        c = randint(0,14)
+        self.r = r
+        self.c = c
+        return(r, c)
+        
     row, col = opponent_move
     self.grid[row, col] = -self.sign
     if self.round < 2:                             # pokud je počet kol menší než dva
-      if self.grid[row, col+1] == 0 and col < 14:  # pokud je v pravo od posledního tahu oponenta místo a zároveň nejsme na kraji
+      if col < 14 and self.grid[row, col+1] == 0:  # pokud je v pravo od posledního tahu oponenta místo a zároveň nejsme na kraji
+        print((row, col))
         self.round = self.round + 1                # počet kol se o jedno zvýší
         self.r = row                               # mé souřadnice řádku se nastaví na souřadnice oponenta
         self.c = col+1                             # mé souřadnice řádku se nastaví na o jedno vyšší než souřadnice oponenta
