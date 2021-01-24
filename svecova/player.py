@@ -15,11 +15,17 @@ class Player:
         c = randint(4,10)
         self.r = r
         self.c = c
+        self.grid[r, c] = self.sign
         return(r, c)
-        
+
     row, col = opponent_move
     self.grid[row, col] = -self.sign
-    if self.round < 0:                             # pokud je počet kol menší než dva
+    r, c = self.pick_turn(row, col)
+    self.grid[r, c] = self.sign
+    return (r, c)
+
+  def pick_turn(self, row, col):
+    if self.round < 2:                             # pokud je počet kol menší než dva
       if col < 14 and self.grid[row, col+1] == 0:  # pokud je v pravo od posledního tahu oponenta místo a zároveň nejsme na kraji
         print((row, col))
         self.round = self.round + 1                # počet kol se o jedno zvýší
@@ -32,11 +38,16 @@ class Player:
         self.c = col-1
         return(row, col-1)                         # křížek se nakreslí vlevo
     else:
+      r, c = self.pick_expansive_turn()
+      return (r, c)
+
+  def pick_expansive_turn(self):
       if self.r < 14 and self.grid[self.r+1, self.c] == 0: # pokud je místo pod posledním naším umístěním,
         r = self.r+1
         c = self.c
         self.r = self.r+1
         self.c = self.c
+        self.grid[r,c] = self.sign
         return(r, c)                                       # nakreslí se křížek pod posledním naším umístěním
       elif self.r > 0 and self.grid[self.r-1, self.c] == 0:
         r = self.r-1
