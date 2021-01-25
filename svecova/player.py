@@ -24,6 +24,12 @@ class Player:
     self.grid[r, c] = self.sign
     return (r, c)
 
+  def pick_random_valid_turn(self):
+    while True:
+      row = random.randint(0, 14)
+      col = random.randint(0, 14)
+      if (self.board.get(row, col) == 0): return (row, col)
+
   def pick_turn(self, row, col):
     if self.round < 2:                             # pokud je počet kol menší než dva
       if col < 14 and self.grid[row, col+1] == 0:  # pokud je v pravo od posledního tahu oponenta místo a zároveň nejsme na kraji
@@ -55,13 +61,13 @@ class Player:
         self.r = self.r-1
         self.c = self.c
         return(r, c)                                       # nahoru o 1
-      elif self.r > 0 and self.grid[self.r-1, self.c] == 1:  #???
+      elif self.r > 0 and self.grid[self.r-1, self.c] == self.sign:  
         r = self.r-2
         c = self.c
         self.r = self.r-2
         self.c = self.c
         return(r, c)                                       # nahoru o 2
-      elif self.r > 0 and self.grid[self.r-2, self.c] == 1:  #???
+      elif self.r > 0 and self.grid[self.r-2, self.c] == self.sign:  #???
         r = self.r-3
         c = self.c
         self.r = self.r-3
@@ -92,8 +98,10 @@ class Player:
         self.c = self.c+1
         return(r, c)                                       # vpravo nahoře
       else:
-        r = randint(4,10)
-        c = randint(4,10)
-        self.r = r
-        self.c = c
-        return(r, c)
+        r, c = pick_random_valid_turn()
+        return(r,c)
+#        r = randint(4,10)
+#        c = randint(4,10)
+#        self.r = r
+#        self.c = c
+#        return(r, c)

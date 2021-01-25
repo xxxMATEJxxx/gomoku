@@ -3,7 +3,7 @@ import svecova.player
 import sebastian.player
 from gomoku_tournament import GomokuTournament
 
-playerX = sebastian.player.Player(1)
+playerX = window.player.Player(1)
 playerO = svecova.player.Player(-1)
 
 tournament = GomokuTournament(playerX, playerO, 300)
