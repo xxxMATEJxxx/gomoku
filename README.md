@@ -16,6 +16,7 @@ execute start_game_custom.py. Now you are playing against your bot in a window.
 
 Please modify only files in your directory and the file start_game_custom.py. Do not modify any other files.
 
+## Tournament
 to start a tournament all vs all:
 
 ```
@@ -29,3 +30,9 @@ To save the console output to a file, execute tournament as follows:
 ```
 python3 start_game_tournament.py | tee output.txt
 ```
+
+## Tips
+Make sure that you always play a valid move. If you make an invalid move, you lose your turn.
+
+If opponent makes an invalid move, you receive None in opponent_move. Make sure that your code does not crash in that case.
+
