@@ -263,12 +263,12 @@ class Player:
         self.sign = player_sign
         self.name = 'Kilbot'
     def play(self, opponent_move):
-        row, col = opponent_move
         if opponent_move == None:
             my_cor=find_play_list(list_cat)
             i,j=my_cor
             table[i,j]=1
             start(my_cor,1,loc)
-        else: 
-            i,j = working(row,col)
+            return (i,j)
+        row, col = opponent_move
+        i,j = working(row,col)
         return (i,j)
