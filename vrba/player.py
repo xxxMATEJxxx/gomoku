@@ -2,19 +2,28 @@ import random
 patterns=[
 (1000000000000,"xxxxx"),
 (-1000000000000,"ooooo"),
-(500,"  xx  "),
-(-500,"  oo  "),
-(6000," x xx "),
-(-6000," o oo "),
-(890000,"xooo x"),
+(5000,"  xx  "),
+(-5000,"  oo  "),
+(60000," x xx "),
+(-60000," o oo "),
+(2000000,"xooo x"),
 (1000000,"  xxx  "),
 (-1000000,"  ooo  "),
-(15000,"x xx xo"),
+(15000 ,"x xx xo"),
 (10000000," xxxx "),
-(-10000000," oooo ")
+(-10000000," oooo "),
+(500000,"xxx  "),
+(500000,"  xxx"),
+(-500000,"ooo  "),
+(-500000,"  ooo"),
+(60000,"xoo  x"),
+(60000,"x oo x"),
+(60000,"x  oox"),
+(2000,"xx   "),
+(2000,"   xx"),
+(-2000,"oo   "),
+(-2000,"   oo"),
 ]
-
-
 class Board:
     SIZE = 15
     def generate_rows(self):
@@ -64,7 +73,7 @@ class Board:
             self.diagonals_descending[descending_diagonal_number][row] = player
         #self.print_all()
 
-    def get(self, row, col):
+    def get(self,row,col):
         return self.rows[row][col]
 
     def print_all(self):
@@ -80,7 +89,7 @@ class Board:
         print('asc')
         for d in self.diagonals_ascending:
             print(d)
-    def row_to_string(row):
+    def row_to_string(self,row):
         output=" "
         for i in row:
             if i==0:
@@ -110,9 +119,9 @@ class Board:
             score += self.evaluate_row(row)
         return score
 class Player:
-    def __init__(self):
-        self.sign =1
-        self.opponent_sign =-1
+    def __init__(self, player_sign):
+        self.sign = 1
+        self.opponent_sign = -1
         self.name = 'Vrba'
         self.board = Board()
         random.seed(17)
@@ -122,23 +131,26 @@ class Player:
             row = random.randint(0, 14)
             col = random.randint(0, 14)
             if (self.board.get(row, col) == 0): return (row, col)
+
     def pick_best_turn(self):
-        best_score = -float("inf")
-        best_turn = none
+        best_score = -float('inf')
+        best_turn = None
         for row in range(15):
-            for column in range(15):
-                if (self.board.get(row, col) == 0): continue
-                self.board.new_turn(row,col)
-                score=self.board.evaluate_position()
-                if score>best_score:
-                    best_score=score
-                    best_turn=(row,col)
-                self.board.new_turn(row,col,0)
+            for col in range(15):
+                if (self.board.get(row, col) != 0): continue
+                self.board.new_turn(row, col, self.sign)
+                score = self.board.evaluate_position()
+                if score > best_score:
+                    best_turn = (row, col)
+                    best_score = score
+                self.board.new_turn(row, col, 0)
         return best_turn
-    def play(self, opponent_move):		
+
+    def play(self, opponent_move):
         if opponent_move != None:
             row, col = opponent_move
             self.board.new_turn(row, col, self.opponent_sign)
+        #my_turn_row, my_turn_col = self.pick_random_valid_turn()
         my_turn_row, my_turn_col = self.pick_best_turn()
         self.board.new_turn(my_turn_row, my_turn_col, self.sign)
         return my_turn_row, my_turn_col
