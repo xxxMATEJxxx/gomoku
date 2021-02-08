@@ -10,6 +10,12 @@ import martins.player
 import randomvalid.player
 import svecova.player
 import sebastian.player
+import benda.player
+import honzapika.player
+import janmrzilek.player
+import lionel.player
+#import majstr.player
+import vrba.player
 
 from gomoku_tournament import GomokuTournament
 
@@ -21,6 +27,12 @@ players_and_names = [
     (randomvalid.player, 'random valid'),
     (svecova.player, 'Hana Svecova'),
     (sebastian.player, 'Sebastian'),
+    (benda.player, 'Benda'),
+    (honzapika.player, 'Honza Pika'),
+    (janmrzilek.player, 'Jan Mrzílek'),
+    (lionel.player, 'Lionel'),
+    #(majstr.player, 'Majstr'),
+    (vrba.player, 'Vrba'),
 ]
 try:
     os.remove('logs.txt')
