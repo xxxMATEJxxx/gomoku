@@ -110,7 +110,7 @@ class Board:
             score += self.evaluate_row(row)
         return score
 class Player:
-    def __init__(self):
+    def __init__(self, sign):
         self.sign =1
         self.opponent_sign =-1
         self.name = 'Vrba'
