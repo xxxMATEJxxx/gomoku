@@ -1,15 +1,6 @@
 import random as rd
 import numpy as np
 
-table = np.zeros((15,15))
-five_lines=[]
-four_lines=[]
-three_lines=[]
-two_lines=[]
-one_lines=[]
-list_cat=[one_lines,two_lines,three_lines,four_lines,five_lines] 
-loc=[[1,1],[1,0],[1,-1],[0,1],[0,-1],[-1,1],[-1,0],[-1,-1]]
-
 def oukejability(*args):
     for i in args:
         if i[0]>14 or i[0]<0 or i[1]>14 or i[1]<0:
@@ -129,59 +120,6 @@ def categorize_line(line_obj):
             return
     list_cat[line_obj.length-1].append(line_obj)
     
-def find_play_list(list_cat):
-    list_cat=[one_lines,two_lines,three_lines,four_lines]
-    play_list=[]
-    new_play_list=[]
-    ind=0
-    for i in list_cat:
-        update(i)
-        for k in i:
-            if not k.check:
-                del k
-        for x in i:
-            if x.length!=list_cat.index(i)+1:
-                categorize_line(x)
-    for i,value in enumerate(list_cat):
-        for k in value:
-            if is_space_left(k.start,k.end,k.step,k.length,k.player):
-                if k.player==1:    ind=1
-                if k.after_end==0:
-                    for z in range((i*4+1)):
-                        play_list.append(k.after_end_c)
-                if k.before_start==0:
-                    for z in range((i*4+1)):
-                        play_list.append(k.before_start_c)
-                if k.length==4 and k.before_start==0:
-                    for x in range(40+20*ind):
-                        play_list.append(k.before_start_c)
-                if k.length==4 and k.after_end==0:
-                    for x in range(40+20*ind):
-                        play_list.append(k.after_end_c)
-                if k.length==3 and oukejability(k.before_start_c-k.step,k.after_end_c+k.step):
-                    if k.before_start==0 and k.after_end==0: 
-                        for z in range(15):
-                            play_list.append(k.before_start_c)
-                            play_list.append(k.after_end_c)
-                    if (k.before_start==0 and table[(k.before_start_c-k.step)[0],(k.before_start_c-k.step)[1]]==k.player):
-                        for z in range(20):
-                            play_list.append(k.before_start_c)
-                    if (k.after_end==0 and table[(k.after_end_c+k.step)[0],(k.after_end_c+k.step)[1]]==k.player):
-                        for z in range(20):
-                            play_list.append(k.after_end_c)
-                if oukejability(k.before_start_c-k.step,k.after_end_c+k.step):
-                    if k.before_start==0 and table[(k.before_start_c-k.step)[0],(k.before_start_c-k.step)[1]]==k.player:
-                        for z in range(((k.length+check_line_length(k.before_start_c-k.step,k.step,k.player))*4+1)//2):
-                            play_list.append(k.before_start_c)
-                    if (k.after_end==0 and table[(k.after_end_c+k.step)[0],(k.after_end_c+k.step)[1]]==k.player):
-                        for z in range(((k.length+check_line_length(k.after_end_c+k.step,k.step,k.player))*4+1)//2):
-                            play_list.append(k.after_end_c)
-                ind=0
-    for i in play_list:
-        if oukejability(i):
-            if table[i[0],i[1]]==0:
-                new_play_list.append(i)
-    return(find_the_frequentest(new_play_list))
 
 def is_space_left(start,end,step,length,player):
     l=5-length
@@ -198,6 +136,61 @@ def is_space_left(start,end,step,length,player):
     if l<=0:
         return True
     return False
+
+def find_play_list(list_cat):
+    list_cat=[one_lines,two_lines,three_lines,four_lines,five_lines]
+    play_list=[]
+    new_play_list=[]
+    ind=0
+    for i in list_cat:
+        update(i)
+        for k in i:
+            if not k.check:
+                del k
+        for x in i:
+            if x.length!=list_cat.index(i)+1:
+                categorize_line(x)
+    for i,value in enumerate(list_cat):
+        for k in value:
+            if is_space_left(k.start,k.end,k.step,k.length,k.player):
+                if k.player==very_x:    ind=1
+                if k.after_end==0:
+                    for z in range((i*4+1)):
+                        play_list.append(k.after_end_c)
+                if k.before_start==0:
+                    for z in range((i*4+1)):
+                        play_list.append(k.before_start_c)
+                if k.length==4 and k.before_start==0:
+                    for x in range(40+20*ind):
+                        play_list.append(k.before_start_c)
+                if k.length==4 and k.after_end==0:
+                    for x in range(40+20*ind):
+                        play_list.append(k.after_end_c)
+                if k.length==3 and oukejability(k.before_start_c-k.step,k.after_end_c+k.step):
+                    if k.before_start==0 and k.after_end==0: 
+                        for z in range(15+5*ind):
+                            play_list.append(k.before_start_c)
+                            play_list.append(k.after_end_c)
+                    if (k.before_start==0 and table[(k.before_start_c-k.step)[0],(k.before_start_c-k.step)[1]]==k.player):
+                        for z in range(20+ind):
+                            play_list.append(k.before_start_c)
+                    if (k.after_end==0 and table[(k.after_end_c+k.step)[0],(k.after_end_c+k.step)[1]]==k.player):
+                        for z in range(20+ind):
+                            play_list.append(k.after_end_c)
+                if oukejability(k.before_start_c-k.step,k.after_end_c+k.step):
+                    if k.before_start==0 and table[(k.before_start_c-k.step)[0],(k.before_start_c-k.step)[1]]==k.player:
+                        for z in range(((k.length+check_line_length(k.before_start_c-k.step,k.step,k.player))*4+1)//2):
+                            play_list.append(k.before_start_c)
+                    if (k.after_end==0 and table[(k.after_end_c+k.step)[0],(k.after_end_c+k.step)[1]]==k.player):
+                        for z in range(((k.length+check_line_length(k.after_end_c+k.step,k.step,k.player))*4+1)//2):
+                            play_list.append(k.after_end_c)
+                ind=0
+    for i in play_list:
+        if oukejability(i):
+            if table[i[0],i[1]]==0:
+                new_play_list.append(i)
+    return(find_the_frequentest(new_play_list))
+
 
 def check_line_length(coor,step,player):
     length=0
@@ -249,26 +242,49 @@ def start(cor,p,loc):
                     lvl = np.array(i)-np.array(cor)
             find_line(cor,lvl.tolist(),p)
             
-def working(row,col):
-    table[row,col]=-1
-    start([row,col],-1,loc)
+def working(row,col,self_sign):
+    table[row,col]=-self_sign
+    start([row,col],-self_sign,loc)
     my_cor=find_play_list(list_cat)
     i,j=my_cor
-    table[i,j]=1
-    start(my_cor,1,loc)
+    table[i,j]=self_sign
+    start(my_cor,self_sign,loc)
     return my_cor
 
 class Player:
     def __init__(self, player_sign):
         self.sign = player_sign
         self.name = 'Kilbot'
+        global table
+        table = np.zeros((15,15))
+        global five_lines
+        five_lines=[]
+        global four_lines
+        four_lines=[]
+        global three_lines
+        three_lines=[]
+        global two_lines
+        two_lines=[]
+        global one_lines
+        one_lines=[]
+        global list_cat
+        list_cat=[one_lines,two_lines,three_lines,four_lines,five_lines] 
+        global loc
+        loc=[[1,1],[1,0],[1,-1],[0,1],[0,-1],[-1,1],[-1,0],[-1,-1]]
+        global very_x
+        very_x=self.sign
+  
     def play(self, opponent_move):
         if opponent_move == None:
-            my_cor=find_play_list(list_cat)
-            i,j=my_cor
-            table[i,j]=1
-            start(my_cor,1,loc)
+            if one_lines or two_lines or three_lines or four_lines:
+                my_cor=find_play_list(list_cat)
+                i,j=my_cor
+            else:
+                my_cor=[7,7]
+                i,j=my_cor
+            table[i,j]=self.sign
+            start(my_cor,self.sign,loc)
             return (i,j)
         row, col = opponent_move
-        i,j = working(row,col)
+        i,j = working(row,col,self.sign)
         return (i,j)
