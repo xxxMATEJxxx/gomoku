@@ -172,10 +172,10 @@ def find_play_list(list_cat):
                             play_list.append(k.before_start_c)
                             play_list.append(k.after_end_c)
                     if (k.before_start==0 and table[(k.before_start_c-k.step)[0],(k.before_start_c-k.step)[1]]==k.player):
-                        for z in range(20+ind):
+                        for z in range(30+ind):
                             play_list.append(k.before_start_c)
                     if (k.after_end==0 and table[(k.after_end_c+k.step)[0],(k.after_end_c+k.step)[1]]==k.player):
-                        for z in range(20+ind):
+                        for z in range(30+ind):
                             play_list.append(k.after_end_c)
                 if oukejability(k.before_start_c-k.step,k.after_end_c+k.step):
                     if k.before_start==0 and table[(k.before_start_c-k.step)[0],(k.before_start_c-k.step)[1]]==k.player:
