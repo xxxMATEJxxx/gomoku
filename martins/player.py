@@ -1,5 +1,14 @@
 import random
 
+PATTERNS = [
+    (1000000000000000, 'xxxxx'),
+    (-1000000000000000, 'ooooo'),
+    (1, '   xx   '),
+    (-1, '   oo   '),
+    (-10000000, '  ooo  '),
+    (10000000, '  xxx  '),
+    # TODO doplnit vzory
+]
 class Board:
     SIZE = 15
 
@@ -36,6 +45,36 @@ class Board:
         self.diagonals_descending = self.generate_diagonals()
         self.diagonals_ascending = self.generate_diagonals()
 
+    def row_to_string(self, row):
+        output = ''
+        for i in row:
+            if (i == 0):
+                output += ' '
+            if (i == 1):
+                output += 'x'
+            if (i == -1):
+                output += 'o'
+        return output
+
+    def evaluate_row(self, row):
+        string_row = self.row_to_string(row)
+        total_score = 0
+        for pattern in PATTERNS:
+            score, p = pattern
+            if p in string_row:
+                print(f'found pattern {p} in {row}')
+                total_score += score
+                #total_score = total_score + score
+        return total_score
+
+
+    def evaluate_position(self):
+        total_score = 0
+        for row in self.rows:
+            total_score += self.evaluate_row(row)
+        # TODO hodnotit i sloupce a diagonaly
+        return total_score
+
     def new_turn(self, row, column, player):
         self.rows[row][column] = player
         self.columns[column][row] = player
@@ -70,8 +109,8 @@ class Board:
 
 class Player:
     def __init__(self, player_sign):
-        self.sign = player_sign
-        self.opponent_sign = -player_sign
+        self.sign = 1
+        self.opponent_sign = -1
         self.name = 'Martin Spanel'
         self.board = Board()
         random.seed(17)
@@ -82,10 +121,25 @@ class Player:
             col = random.randint(0, 14)
             if (self.board.get(row, col) == 0): return (row, col)
 
+    def pick_best_turn(self):
+        best_score = -float('inf')
+        best_turn = None
+        for row in range(15):
+            for col in range(15):
+                if (self.board.get(row, col) != 0): continue
+                self.board.new_turn(row, col, self.sign)
+                score = self.board.evaluate_position()
+                if score > best_score:
+                    best_turn = (row, col)
+                    best_score = score
+                self.board.new_turn(row, col, 0)
+        return best_turn
+
     def play(self, opponent_move):
         if opponent_move != None:
             row, col = opponent_move
             self.board.new_turn(row, col, self.opponent_sign)
-        my_turn_row, my_turn_col = self.pick_random_valid_turn()
+        #my_turn_row, my_turn_col = self.pick_random_valid_turn()
+        my_turn_row, my_turn_col = self.pick_best_turn()
         self.board.new_turn(my_turn_row, my_turn_col, self.sign)
         return my_turn_row, my_turn_col

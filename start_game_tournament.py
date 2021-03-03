@@ -1,21 +1,38 @@
+#!/usr/bin/python3
+
 import os
+from collections import Counter
 
 #import window.player
 import example.player
-import majstr.player
+import numPatrik.player
 import martins.player
+import randomvalid.player
 import svecova.player
 import sebastian.player
+import benda.player
+import honzapika.player
+import janmrzilek.player
+import lionel.player
+#import majstr.player
+import vrba.player
 
 from gomoku_tournament import GomokuTournament
 
 TIME_LIMIT = 300
 
 players_and_names = [
-    (majstr.player, 'Majstr'),
+    (numPatrik.player, 'Patrik Černohorský'),
     (martins.player, 'Martin Spanel'),
+    (randomvalid.player, 'random valid'),
     (svecova.player, 'Hana Svecova'),
     (sebastian.player, 'Sebastian'),
+    (benda.player, 'Benda'),
+    (honzapika.player, 'Honza Pika'),
+    (janmrzilek.player, 'Jan Mrzílek'),
+    (lionel.player, 'Lionel'),
+    #(majstr.player, 'Majstr'),
+    (vrba.player, 'Vrba'),
 ]
 try:
     os.remove('logs.txt')
@@ -46,6 +63,7 @@ for i in range(nplayers):
         else:
             print(f'winner is {"X" if winner == 1 else "O"}: {name_i if winner == 1 else name_j}')
 
+points = Counter()
 print('results:')
 for i in range(nplayers):
     for j in range(nplayers):
@@ -56,5 +74,15 @@ for i in range(nplayers):
         print(f'{name_i} vs. {name_j}')
         if winner == 0:
             print('nobody won.')
+            points[name_i] += 1
+            points[name_j] += 1
+        elif winner == 1:
+            print(f'winner:\t\t\t"X": {name_i}')
+            points[name_i] += 2
         else:
-            print(f'winner:\t\t\t{"X" if winner == 1 else "O"}: {name_i if winner == 1 else name_j}')
+            print(f'winner:\t\t\t"O": {name_j}')
+            points[name_j] += 2
+print('scores (win 2 points, tie 1 point):')
+for name in points:
+    print(f'{name}: {points[name]}')
+

@@ -1,46 +1,36 @@
 import random
 
 PATTERNS = [
-    (10000000000000000000000000000000, 'xxxxx'),
-    (-100000000000000000000000000000000, 'ooooo'),
-    
-    (1, '       x       '),
-    
-    (100000000000000, ' xxxx '),
-    (-1000000000000000, ' oooo '), 
-
-    (-100000000000, 'oxxxx '),
-    (-100000000000, ' xxxxo'),
-
-    (-10000000000, 'xoooo '),
-    (-10000000000, ' oooox'),
-
-    (-100000000, 'oo oo'),   # O O _ O O
-
-    (1000000, '  xxx  '),  # _ _ X X X _ _
-    (-1000000, '  ooo  '), # _ _ O O O _ _ 
-    
-    (-100, ' o o '),    
-    
-    (10, '   xx   '), # _ _ _ X X _ _ _
-    (-10, '   oo   '),# _ _ _ O O _ _ _ 
-
-    (1000, 'xooox'),
-    (1000, 'xooox'),
-    (1000, 'xooo'),
-    (1000, 'ooox'),
-    
-    (-10000000, ' oo o'),
-    (-10000000, 'oo o '),
-    (-10000000, ' o oo'),
-    (-10000000, 'o oo '),
-    
-    (-100000000, 'xx  o'),
-    (-100000000, 'o  xx')
-    
-    
-
-]
+    (1000000000000000, 'xxxxx'),
+    (-1000000000000000, 'ooooo'),
+    (10, '  xx  '),
+    (-10, '  oo  '),
+    (10, ' x x  '),
+    (-10, ' o o  '),
+    (10, '  x x '),
+    (-10, ' o o '),
+    (100, '   xx   '),
+    (-100, '   oo   '),
+    (-3300000, '  ooo  '),
+    (1100000, '  xxx  '),
+    (-3000000, ' ooo '),
+    (1000000, ' xxx '),
+    (-3000, 'xooo '),
+    (1000, 'oxxx '),
+    (-3300000,'  oo o '),
+    (1100000,'  xx x '),
+    (-3000000,' oo o '),
+    (1000000,' xx x '),
+    (-300000000000,' oooo '),
+    (100000000000,' xxxx '),
+    (-3000000,'oooo '),
+    (1000000,'xxxx '),
+    (-3000000,' oooo'),
+    (1000000,' xxxx'),
+    (-3000000000,'oo oo'),
+    (1000000000,'xx xx'),
+    (10,'       x       ')
+      ]
 class Board:
     SIZE = 15
 
@@ -96,6 +86,7 @@ class Board:
             if p in string_row:
                 print(f'found pattern {p} in {row}')
                 total_score += score
+                #total_score = total_score + score
         return total_score
 
 
@@ -105,10 +96,10 @@ class Board:
             total_score += self.evaluate_row(row)
         for col in self.columns:
             total_score += self.evaluate_row(col)
-        for asc in self.diagonals_ascending:
-            total_score += self.evaluate_row(asc)
         for desc in self.diagonals_descending:
             total_score += self.evaluate_row(desc)
+        for asc in self.diagonals_ascending:
+            total_score += self.evaluate_row(asc)
         return total_score
 
     def new_turn(self, row, column, player):
@@ -147,7 +138,7 @@ class Player:
     def __init__(self, player_sign):
         self.sign = 1
         self.opponent_sign = -1
-        self.name = 'Sebastian bot'
+        self.name = 'Stepan'
         self.board = Board()
         random.seed(17)
 
@@ -175,6 +166,7 @@ class Player:
         if opponent_move != None:
             row, col = opponent_move
             self.board.new_turn(row, col, self.opponent_sign)
+            
         #my_turn_row, my_turn_col = self.pick_random_valid_turn()
         my_turn_row, my_turn_col = self.pick_best_turn()
         self.board.new_turn(my_turn_row, my_turn_col, self.sign)
